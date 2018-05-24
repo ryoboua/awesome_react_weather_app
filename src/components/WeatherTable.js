@@ -7,62 +7,53 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
 const paperStyle = {
-    height: '500px',
+    height: 'auto',
     width: '80%',
-    margin: '50px auto'
+    margin: 'auto',
+    marginBottom: '50px'
 }
 
+const weekdays = ['Sun','Mon','Tues','Wed','Thur','Fri','Sat']
 
-const data = {
-    "cod":"200","message":0.0032,
-    "city":{"id":1851632,"name":"Shuzenji",
-    "coord":{"lon":138.933334,"lat":34.966671},
-    "country":"JP"},
-    "cnt":10,
-    "list":[{
-        "dt":1406080800,
-        "temp":{
-            "day":297.77,
-            "min":293.52,
-            "max":297.77,
-            "night":293.52,
-            "eve":297.77,
-            "morn":297.77},
-        "pressure":925.04,
-        "humidity":76,
-        "weather":[{"id":803,"main":"Clouds","description":"broken clouds","icon":"04d"}],}
-        ]}
 
 class WeatherTable extends Component {
     render(){
+        const degreeUnit = this.props.unitFormat === 'metric' ? '°C' : this.props.unitFormat === 'imperial' ? '°F' : 'K'
+        const speedUnit = this.props.unitFormat === 'metric' || this.props.unitFormat === '' ? 'KPH' : 'MPH'
+
         return (
             <Paper style={paperStyle} >
                 <Table>
-                    <TableHead>
+                    <TableHead style={{backgroundColor:'#EEF6FB'}} >
                         <TableRow>
-                        <TableCell>DAY</TableCell>
-                        <TableCell numeric>DESCRIPTION</TableCell>
-                        <TableCell numeric>HIGH / LOW</TableCell>
-                        <TableCell numeric>WIND</TableCell>
-                        <TableCell numeric>HUMIDITY</TableCell>                      
+                            <TableCell>DAY</TableCell>
+                            <TableCell numeric>DESCRIPTION</TableCell>
+                            <TableCell numeric>{`HIGH / LOW (${degreeUnit})`}</TableCell>
+                            <TableCell numeric>{`WIND (${speedUnit})`}</TableCell>
+                            <TableCell numeric>HUMIDITY (%)</TableCell>                      
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {this.props.weatherData.list.map( (n,index) => {
+                        const d = new Date(n.dt * 1000)
                         return (
                             <TableRow key={index}>
                             <TableCell component="th" scope="row">
-                                <img src={`http://openweathermap.org/img/w/${n.weather[0].icon}.png`} />
+                                <div style={{display: 'inline-block'}} >
+                                    <p style={{display: 'inline-block'}} >{`${d.getMonth() + 1}/${d.getDate()}`}</p>
+                                    <p>{ index === 0 ? 'Today' : weekdays[d.getDay()]}</p>
+                                </div>
+                                <img src={`http://openweathermap.org/img/w/${n.weather[0].icon}.png`} alt={n.weather[0].main}/>
                             </TableCell>
                             <TableCell numeric>{n.weather[0].description}</TableCell>
-                            <TableCell numeric>{n.temp.min + '/' + n.temp.max}</TableCell>
-                            <TableCell numeric>{n.speed}</TableCell>
+                            <TableCell numeric>{n.temp.max + '/' + n.temp.min}</TableCell>
+                            <TableCell numeric>{this.props.unitFormat === 'imperial' ? n.speed : (n.speed * 3.6).toFixed(2)}</TableCell>
                             <TableCell numeric>{n.humidity}</TableCell>
                             </TableRow>
-                        );
+                        )
                         })}
                     </TableBody>
-      </Table>
+                </Table>
             </Paper>
 
         )
