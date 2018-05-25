@@ -6,21 +6,20 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 
 
-class MetricSelector extends Component {
+export default class MetricSelector extends Component {
     constructor(props){
         super(props)
         this.handleChange = this.handleChange.bind(this)
     }
 
     handleChange(event) {
-        console.log(event.target.value)
         this.props.setUnitFormat(event.target.value)
       };
     render(){
         return (
             <div style={{display:'block', marginTop: '30px'}}>
                 <FormControl component="fieldset">
-                    <FormLabel component="legend" focused={true} >Units format</FormLabel>
+                    <FormLabel style={{ color: 'black'}} component="legend" focused={true} >Unit Format</FormLabel>
                     <RadioGroup
                         style={{display:'flex', flexDirection: 'row'}} 
                         aria-label="gender"
@@ -38,5 +37,3 @@ class MetricSelector extends Component {
     }
     
 }
-
-export default MetricSelector

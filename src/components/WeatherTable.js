@@ -16,7 +16,7 @@ const paperStyle = {
 const weekdays = ['Sun','Mon','Tues','Wed','Thur','Fri','Sat']
 
 
-class WeatherTable extends Component {
+export default class WeatherTable extends Component {
     render(){
         const degreeUnit = this.props.unitFormat === 'metric' ? '°C' : this.props.unitFormat === 'imperial' ? '°F' : 'K'
         const speedUnit = this.props.unitFormat === 'metric' || this.props.unitFormat === '' ? 'KPH' : 'MPH'
@@ -26,15 +26,15 @@ class WeatherTable extends Component {
                 <Table>
                     <TableHead style={{backgroundColor:'#EEF6FB'}} >
                         <TableRow>
-                            <TableCell>DAY</TableCell>
-                            <TableCell numeric>DESCRIPTION</TableCell>
-                            <TableCell numeric>{`HIGH / LOW (${degreeUnit})`}</TableCell>
-                            <TableCell numeric>{`WIND (${speedUnit})`}</TableCell>
-                            <TableCell numeric>HUMIDITY (%)</TableCell>                      
+                            <TableCell style={{color: 'black'}}>DAY</TableCell>
+                            <TableCell style={{color: 'black'}} numeric>DESCRIPTION</TableCell>
+                            <TableCell style={{color: 'black'}} numeric>{`HIGH / LOW (${degreeUnit})`}</TableCell>
+                            <TableCell style={{color: 'black'}} numeric>{`WIND (${speedUnit})`}</TableCell>
+                            <TableCell style={{color: 'black'}} numeric>HUMIDITY (%)</TableCell>                      
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {this.props.weatherData.list.map( (n,index) => {
+                        {this.props.weatherData.list.map( (n, index) => {
                         const d = new Date(n.dt * 1000)
                         return (
                             <TableRow key={index}>
@@ -59,5 +59,3 @@ class WeatherTable extends Component {
         )
     }
 }
-
-export default WeatherTable

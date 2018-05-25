@@ -13,13 +13,14 @@ const getWeatherData = (city, country, units) => {
             .then(response => response.json())
 }
 
-
-class WeatherApp extends Component {
+export default class WeatherApp extends Component {
     constructor(props){
         super(props)
         
         this.state = {
-            city: 'Toronto',
+            getCity: '',
+            getCountry: 'CA',
+            city: '',
             country: 'CA',
             weatherData: null,
             unitFormat: 'metric'
@@ -41,30 +42,32 @@ class WeatherApp extends Component {
     }
 
     handleSubmit(){
-        this.state.city === '' ? 
-        alert('Please Enter a city in the selected country')
-        : 
-        getWeatherData(this.state.city, this.state.country, this.state.unitFormat).then(this.catchWeatherData)
+        this.setState({getCity: this.state.city, getCountry: this.state.country}, () => {
+            this.state.getCity === '' ? 
+            alert('Please Enter a city in the selected country')
+            : 
+            getWeatherData(this.state.getCity, this.state.getCountry, this.state.unitFormat).then(this.catchWeatherData)
+        })  
     }
 
     catchWeatherData(weatherData){
         console.log(weatherData)
         weatherData.cod === '404' ?
-        alert(weatherData.message)
+        this.setState({ weatherData: null, city: '' }, () => alert(weatherData.message))
         : 
         this.setState({ weatherData })
     }
 
     setUnitFormat(unitFormat){
         this.setState({ unitFormat }, () => {
-            if (this.state.city !== '') getWeatherData(this.state.city, this.state.country, this.state.unitFormat).then(this.catchWeatherData)
+            if (this.state.city !== '') getWeatherData(this.state.getCity, this.state.getCountry, this.state.unitFormat).then(this.catchWeatherData)
         })
     }
 
     render(){
         return (
-            <div>
-                <h1>Awesome WeatherApp</h1>
+            <div onKeyPress={ (event) => (event.key === 'Enter') ? this.handleSubmit() : null }>
+                <h1 style={{ color: '#303f9f'}} >Awesome WeatherApp</h1>
                 <CountrySelector 
                     handleCountrySelect={this.handleCountrySelect} 
                     selectedCountry={this.state.country} 
@@ -88,5 +91,3 @@ class WeatherApp extends Component {
         )
     }
 }
-
-export default WeatherApp
