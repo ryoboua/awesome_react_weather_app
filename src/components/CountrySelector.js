@@ -9,9 +9,6 @@ import FormControl from '@material-ui/core/FormControl';
 export default class CountrySelector extends Component {
     constructor(props){
         super(props)
-        this.state = {
-            selectedCountry: 'CA'
-        }
         this.handleCountrySelect = this.handleCountrySelect.bind(this)
     }
 
@@ -19,7 +16,7 @@ export default class CountrySelector extends Component {
         this.props.handleCountrySelect(event.target.value)
     }
 
-    render(){ 
+    render(){
         return (
             <FormControl>
                 <NativeSelect
