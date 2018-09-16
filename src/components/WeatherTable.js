@@ -10,7 +10,8 @@ const paperStyle = {
     height: 'auto',
     width: '80%',
     margin: 'auto',
-    marginBottom: '50px'
+    marginBottom: '50px',
+    background: '#ECEBE9'
 }
 
 const weekdays = ['Sun','Mon','Tues','Wed','Thur','Fri','Sat']

@@ -65,9 +65,12 @@ export default class WeatherApp extends Component {
     }
 
     render(){
+        navigator.geolocation.getCurrentPosition(function(position) {
+            console.log(position.coords.latitude, position.coords.longitude);
+          });
         return (
             <div onKeyPress={ (event) => (event.key === 'Enter') ? this.handleSubmit() : null }>
-                <h1 style={{ color: '#303f9f'}} >Awesome WeatherApp</h1>
+                <h1 style={{ color: '#f2f2f2'}} >Awesome WeatherApp</h1>
                 <CountrySelector 
                     handleCountrySelect={this.handleCountrySelect} 
                     selectedCountry={this.state.country} 

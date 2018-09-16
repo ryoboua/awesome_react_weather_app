@@ -28,7 +28,7 @@ export default class CountrySelector extends Component {
                     >
                     { countryList.map( country => <option key={country.code} value={country.code}>{country.name}</option>) }
                 </NativeSelect>
-                <FormHelperText>Please select a country</FormHelperText>
+                <FormHelperText style={{color: '#f2f2f2'}} >Please select a country</FormHelperText>
             </FormControl>
         )
     }
