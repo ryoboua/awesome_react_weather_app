@@ -14,34 +14,25 @@ const getWeatherData = (city, country, units) => {
 }
 
 export default class WeatherApp extends Component {
-    constructor(props){
-        super(props)
-        
-        this.state = {
-            getCity: '',
-            getCountry: 'CA',
-            city: '',
-            country: 'CA',
-            weatherData: null,
-            unitFormat: 'metric'
-        }
-        this.handleCityChange = this.handleCityChange.bind(this)
-        this.handleSubmit = this.handleSubmit.bind(this)
-        this.handleCountrySelect = this.handleCountrySelect.bind(this)
-        this.catchWeatherData = this.catchWeatherData.bind(this)
-        this.setUnitFormat = this.setUnitFormat.bind(this)
+    state = {
+        getCity: '',
+        getCountry: 'CA',
+        city: '',
+        country: 'CA',
+        weatherData: null,
+        unitFormat: 'metric'
     }
 
-    handleCityChange(event){
+    handleCityChange = event => {
         this.setState({city: event.target.value})
     }
 
-    handleCountrySelect(country){
+    handleCountrySelect = country => {
         console.log(country)
         this.setState({ country })
     }
 
-    handleSubmit(){
+    handleSubmit = () => {
         this.setState({getCity: this.state.city, getCountry: this.state.country}, () => {
             this.state.getCity === '' ? 
             alert('Please Enter a city in the selected country')
@@ -50,7 +41,16 @@ export default class WeatherApp extends Component {
         })  
     }
 
-    catchWeatherData(weatherData){
+    findMyLocation = () => {
+        console.log(process.env.GOOGLE_API_KEY)
+        navigator.geolocation.getCurrentPosition(function(position) {
+            const geolocation = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key=YOUR_API_KEY'
+     
+            console.log(position.coords.latitude, position.coords.longitude);
+          })
+    }
+
+    catchWeatherData = weatherData => {
         console.log(weatherData)
         weatherData.cod === '404' ?
         this.setState({ weatherData: null, city: '' }, () => alert(weatherData.message))
@@ -58,16 +58,13 @@ export default class WeatherApp extends Component {
         this.setState({ weatherData })
     }
 
-    setUnitFormat(unitFormat){
+    setUnitFormat= unitFormat => {
         this.setState({ unitFormat }, () => {
             if (this.state.city !== '') getWeatherData(this.state.getCity, this.state.getCountry, this.state.unitFormat).then(this.catchWeatherData)
         })
     }
 
     render(){
-        navigator.geolocation.getCurrentPosition(function(position) {
-            console.log(position.coords.latitude, position.coords.longitude);
-          });
         return (
             <div onKeyPress={ (event) => (event.key === 'Enter') ? this.handleSubmit() : null }>
                 <h1 style={{ color: '#f2f2f2'}} >Awesome WeatherApp</h1>
@@ -81,9 +78,17 @@ export default class WeatherApp extends Component {
                     style={{margin: '0px 15px'}}
                     helperText="Select a city in the selected country"
                 />
+                <div>
                 <Button variant="raised" color="primary" onClick={this.handleSubmit}>
                     Search
                 </Button>
+                <br />
+                <br />
+                <Button variant="raised" color="secondary" onClick={this.findMyLocation}>
+                    Use My Location
+                </Button>
+                </div>
+
                 <MetricSelector 
                     setUnitFormat={this.setUnitFormat} 
                     unitFormat={this.state.unitFormat} 
