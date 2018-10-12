@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+
+import { setUnitFormat } from '../actions/index'
+import store from '../store'
+
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -7,15 +11,13 @@ import FormLabel from '@material-ui/core/FormLabel';
 
 
 export default class MetricSelector extends Component {
-    constructor(props){
-        super(props)
-        this.handleChange = this.handleChange.bind(this)
+
+    handleChange = e => {
+        store.dispatch(setUnitFormat(e.target.value))
     }
 
-    handleChange(event) {
-        this.props.setUnitFormat(event.target.value)
-      };
     render(){
+        const { units } = store.getState()
         return (
             <div style={{display:'block', marginTop: '30px'}}>
                 <FormControl component="fieldset">
@@ -24,12 +26,12 @@ export default class MetricSelector extends Component {
                         style={{display:'flex', flexDirection: 'row'}} 
                         aria-label="gender"
                         name="MetricSelector"
-                        value={this.props.unitFormat}
+                        value={units}
                         onChange={this.handleChange}
                     >
                         <FormControlLabel value="metric" control={<Radio />} label="Celsius" />
                         <FormControlLabel value="imperial" control={<Radio />} label="Fahrenheit" />
-                        <FormControlLabel value="" control={<Radio />} label="Kelvin" />
+                        <FormControlLabel value="kelvin" control={<Radio />} label="Kelvin" />
                     </RadioGroup>
                 </FormControl>
             </div>

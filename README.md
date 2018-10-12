@@ -1,3 +1,3 @@
 #awesome_react_weather_app
 
-Simple React Weather app using the openweathermap API
+Simple React/Redux Weather app using the openweathermap API
