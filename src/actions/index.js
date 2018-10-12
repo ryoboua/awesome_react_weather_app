@@ -1,6 +1,6 @@
-export const setUnitFormat = unitFormat => ({
+export const setUnitFormat = units => ({
     type: 'SET_UNIT_FORMAT',
-    units: unitFormat
+    units
 })
 
 export const setCountry = country => ({
@@ -8,7 +8,18 @@ export const setCountry = country => ({
     country
 })
 
-export const catchWeatherData = weatherData => ({
+export const getWeather = (city, country) => ({
+    type: 'GET_WEATHER',
+    city,
+    country
+})
+
+export const catchWeatherData = weatherDataArr => ({
     type: 'CATCH_WEATHER_DATA',
-    weatherData
+    weatherDataArr
+})
+
+export const handleCityChange = city => ({
+    type: 'HANDLE_CITY_CHANGE',
+    city
 })
