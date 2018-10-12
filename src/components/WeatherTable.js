@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
+import store from '../store'
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -12,17 +13,34 @@ const paperStyle = {
     margin: 'auto',
     marginBottom: '50px'
 }
-
 const weekdays = ['Sun','Mon','Tues','Wed','Thur','Fri','Sat']
 
+export default () => {
+    const { weatherDataArr, units } = store.getState()
 
-export default class WeatherTable extends Component {
-    render(){
-        const degreeUnit = this.props.unitFormat === 'metric' ? '°C' : this.props.unitFormat === 'imperial' ? '°F' : 'K'
-        const speedUnit = this.props.unitFormat === 'metric' || this.props.unitFormat === '' ? 'KPH' : 'MPH'
-
-        return (
-            <Paper style={paperStyle} >
+    const degreeUnit = units === 'metric' ? '°C' : units === 'imperial' ? '°F' : 'K'
+    const speedUnit = units === 'metric' || units === 'kelvin' ? 'KPH' : 'MPH'
+    
+    const weatherData = () => {
+        if(weatherDataArr){
+            switch(units) {
+                case 'metric':
+                return weatherDataArr[0]
+                case 'imperial':
+                return weatherDataArr[1]
+                case 'kelvin':
+                return weatherDataArr[2]
+                default:
+                console.log('You broke me')            
+            }
+        } else {
+            return null
+        }
+    }
+    return (
+        weatherDataArr 
+        && 
+        (<Paper style={ paperStyle } >
                 <Table>
                     <TableHead style={{backgroundColor:'#EEF6FB'}} >
                         <TableRow>
@@ -34,7 +52,7 @@ export default class WeatherTable extends Component {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {this.props.weatherData.list.map( (n, index) => {
+                        {weatherData().list.map( (n, index) => {
                         const d = new Date(n.dt * 1000)
                         return (
                             <TableRow key={index}>
@@ -47,15 +65,13 @@ export default class WeatherTable extends Component {
                             </TableCell>
                             <TableCell numeric>{n.weather[0].description}</TableCell>
                             <TableCell numeric>{n.temp.max + '/' + n.temp.min}</TableCell>
-                            <TableCell numeric>{this.props.unitFormat === 'imperial' ? n.speed : (n.speed * 3.6).toFixed(2)}</TableCell>
+                            <TableCell numeric>{units === 'imperial' ? n.speed : (n.speed * 3.6).toFixed(2)}</TableCell>
                             <TableCell numeric>{n.humidity}</TableCell>
                             </TableRow>
                         )
                         })}
                     </TableBody>
                 </Table>
-            </Paper>
-
+            </Paper>)
         )
-    }
 }
