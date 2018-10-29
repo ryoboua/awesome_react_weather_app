@@ -1,7 +1,7 @@
 import { catchWeatherData } from './actions/index'
 import store from './store'
 
-const APIPrefix = "http://api.openweathermap.org/data/2.5/forecast/daily?q="
+const APIPrefix = "https://api.openweathermap.org/data/2.5/forecast/daily?q="
 const APIKey = process.env.REACT_APP_APIKEY
 
 const getWeatherData = async (city, country) => {
